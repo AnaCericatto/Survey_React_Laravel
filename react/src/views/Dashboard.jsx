@@ -1,3 +1,5 @@
+import PageComponent from "../components/PageComponent";
+
 export default function Dashboard() {
-  return <div>Dashboard</div>;
+  return <PageComponent title="Dashboard">Dashboard Content</PageComponent>;
 }

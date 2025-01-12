@@ -1,3 +1,5 @@
+import PageComponent from "../components/PageComponent";
+
 export default function Survey() {
-  return <div>Survey</div>;
+  return <PageComponent title="Surveys">Survey Content</PageComponent>;
 }
