@@ -7,18 +7,15 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { NavLink, Outlet } from "react-router-dom";
+import { Bars3Icon, UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Navigate, NavLink, Outlet } from "react-router-dom";
+import { useStateContext } from "../contexts/ContextProvider";
+import axiosClient from "../axios";
 
-const user = {
-  name: "Tom Cook",
-  email: "tom@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-};
 const navigation = [
   { name: "Dashboard", to: "/" },
   { name: "Surveys", to: "/surveys" },
+  { name: "Create", to: "/surveys/create" },
 ];
 const userNavigation = [{ name: "Sign out", href: "#" }];
 
@@ -27,9 +24,19 @@ function classNames(...classes) {
 }
 
 export default function DefaultLayout() {
+  const { currentUser, userToken, setCurrentUser, setUserToken } =
+    useStateContext();
+
+  if (!userToken) {
+    return <Navigate to={"login"} />;
+  }
+
   const logout = (ev) => {
     ev.preventDefault();
-    console.log("Logout");
+    axiosClient.post("/logout").then(() => {
+      setCurrentUser({});
+      setUserToken(null);
+    });
   };
 
   return (
@@ -75,11 +82,7 @@ export default function DefaultLayout() {
                       <MenuButton className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
-                        <img
-                          alt=""
-                          src={user.imageUrl}
-                          className="size-8 rounded-full"
-                        />
+                        <UserIcon className="w-9 h-9 bg-black/25 p-2 rounded-full text-white" />
                       </MenuButton>
                     </div>
                     <MenuItems
@@ -141,18 +144,14 @@ export default function DefaultLayout() {
             <div className="border-t border-gray-700 pb-3 pt-4">
               <div className="flex items-center px-5">
                 <div className="shrink-0">
-                  <img
-                    alt=""
-                    src={user.imageUrl}
-                    className="size-10 rounded-full"
-                  />
+                  <UserIcon className="w-9 h-9 bg-black/25 p-2 rounded-full text-white" />
                 </div>
                 <div className="ml-3">
                   <div className="text-base/5 font-medium text-white">
-                    {user.name}
+                    {currentUser.name}
                   </div>
                   <div className="text-sm font-medium text-gray-400">
-                    {user.email}
+                    {currentUser.email}
                   </div>
                 </div>
               </div>
