@@ -69,7 +69,7 @@ export default function SurveyQuestions({ questions, onQuestionsUpdate }) {
         ))
       ) : (
         <div className="text-gray-400 text-center py-4">
-          You dont have any questions created
+          You don&#39;t have any questions created
         </div>
       )}
     </>

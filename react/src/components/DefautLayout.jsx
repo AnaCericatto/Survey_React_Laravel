@@ -11,11 +11,11 @@ import { Bars3Icon, UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Navigate, NavLink, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios";
+import { useEffect } from "react";
 
 const navigation = [
   { name: "Dashboard", to: "/" },
   { name: "Surveys", to: "/surveys" },
-  { name: "Create", to: "/surveys/create" },
 ];
 const userNavigation = [{ name: "Sign out", href: "#" }];
 
@@ -38,6 +38,14 @@ export default function DefaultLayout() {
       setUserToken(null);
     });
   };
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    axiosClient.get("/me").then(({ data }) => {
+      setCurrentUser(data);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
