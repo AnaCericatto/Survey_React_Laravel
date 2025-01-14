@@ -2,8 +2,16 @@ import { useState } from "react";
 import PageComponent from "../components/PageComponent";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import TButton from "../components/core/TButton";
+import axiosClient from "../axios.js";
+import { useStateContext } from "../contexts/ContextProvider.jsx";
+import { useNavigate, useParams } from "react-router-dom";
+import SurveyQuestions from "../components/SurveyQuestions.jsx";
 
 export default function SurveyView() {
+  const { showToast } = useStateContext();
+  const navigate = useNavigate();
+  const { id } = useParams();
+
   const [survey, setSurvey] = useState({
     title: "",
     slug: "",
@@ -14,21 +22,79 @@ export default function SurveyView() {
     expire_date: "",
     questions: [],
   });
+  const [error, setError] = useState({ __html: "" });
 
-  const onImageChoose = () => {
-    console.log("image");
+  const onImageChoose = (ev) => {
+    const file = ev.target.files[0];
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setSurvey({
+        ...survey,
+        image: file,
+        image_url: reader.result,
+      });
+
+      ev.target.value = "";
+    };
+    reader.readAsDataURL(file);
   };
 
   const onSubmit = (ev) => {
     ev.preventDefault();
-    console.log(ev);
+    setError({ __html: "" });
+
+    const payload = { ...survey };
+    if (payload.image) {
+      payload.image = payload.image_url;
+    }
+    delete payload.image_url;
+    let res = null;
+    if (id) {
+      res = axiosClient.put(`/survey/${id}`, payload);
+    } else {
+      res = axiosClient.post("/survey", payload);
+    }
+
+    res
+      .then((res) => {
+        console.log(res);
+        navigate("/surveys");
+        if (id) {
+          showToast("The survey was updated");
+        } else {
+          showToast("The survey was created");
+        }
+      })
+      .catch((error) => {
+        if (error.response) {
+          const finalErrors = Object.values(error.response.data.errors).reduce(
+            (accum, next) => [...accum, ...next],
+            []
+          );
+          setError({ __html: finalErrors.join("<br>") });
+        }
+      });
   };
+
+  function onQuestionsUpdate(questions) {
+    setSurvey({
+      ...survey,
+      questions,
+    });
+  }
 
   return (
     <PageComponent title="Create new Survey">
       <form action="#" method="POST" onSubmit={onSubmit}>
         <div className="shadow sm:overflow-hidden sm:rounded-md">
           <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
+            {error.__html && (
+              <div
+                className="bg-red-500 rounded-lg py-2 px-3 text-white"
+                dangerouslySetInnerHTML={error}
+              ></div>
+            )}
             {/* Image - start */}
             <div>
               <label className="block text-sm font-semibold text-gray-700">
@@ -72,6 +138,7 @@ export default function SurveyView() {
                 {" "}
                 Survey Title
               </label>
+              <p className="text-gray-400  text-sm">*Required</p>
               <div className="mt-2 flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                 <input
                   type="text"
@@ -162,6 +229,11 @@ export default function SurveyView() {
               </div>
             </div>
             {/*Active*/}
+
+            <SurveyQuestions
+              questions={survey.questions}
+              onQuestionsUpdate={onQuestionsUpdate}
+            />
           </div>
           <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
             <TButton>Save</TButton>
