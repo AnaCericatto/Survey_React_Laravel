@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\QuestionTypeEnum;
-//use App\Http\Requests\StoreSurveyAnswerRequest;
+use App\Http\Requests\StoreSurveyAnswerRequest;
 use App\Http\Resources\SurveyResource;
 use App\Models\Survey;
 use App\Http\Requests\SurveyStoreRequest;
@@ -23,19 +23,21 @@ class SurveyController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * @return \Illuminate\Http\Response
      */
-    public function index(Resquest $request)
+    public function index(Request $request)
     {
         $user = $request->user();
 
-        return SurveyResourse::collection(
-            Survey::where('user_id', $user.id)
+        return SurveyResource::collection(
+            Survey::where('user_id', $user->id)
             ->orderBy('created_at', 'desc')
-            ->paginate(10));
+            ->paginate(3));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @param  \App\Http\Requests\SurveyStoreRequest  $request
+     * @return \Illuminate\Http\Response
      */
     public function store(SurveyStoreRequest $request)
     {
@@ -60,6 +62,8 @@ class SurveyController extends Controller
 
     /**
      * Display the specified resource.
+     * @param  \App\Models\Survey  $survey
+     * @return \Illuminate\Http\Response
      */
     public function show(Survey $survey, Request $request)
     {
@@ -72,8 +76,12 @@ class SurveyController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * 
+     * @param  \App\Http\Requests\UpdateSurveyRequest  $request
+     * @param  \App\Models\Survey  $survey
+     * @return \Illuminate\Http\Response
      */
-    public function update(SurveyUpdateRequest $request, string $id)
+    public function update(SurveyUpdateRequest $request, Survey $survey)
     {
         $data = $request->validated();
 
@@ -125,8 +133,11 @@ class SurveyController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * 
+     * @param  \App\Models\Survey  $survey
+     * @return \Illuminate\Http\Response
      */
-    public function destroy(string $id)
+    public function destroy(Survey $survey, Request $request)
     {
         $user = $request->user();
         if ($user->id !== $survey->user_id) {
@@ -144,7 +155,12 @@ class SurveyController extends Controller
         return response('', 204);
     }
 
-
+    /**
+     * Save image in local file system and return saved image path
+     *
+     * @param $image
+     * @throws \Exception
+     */
     private function saveImage($image){
         if(preg_match('/^data:image\/(\w+);base64,/', $image, $type)){
             $image = substr($image, strpos($image, ',') + 1);
@@ -172,6 +188,13 @@ class SurveyController extends Controller
         return $relativePath;
     }
 
+    /**
+     * Create a question and return
+     *
+     * @param $data
+     * @return mixed
+     * @throws \Illuminate\Validation\ValidationException
+     */
     private function createQuestion($data){
         if(is_array($data['data'])){
             $data['data'] = json_encode($data['data']);
