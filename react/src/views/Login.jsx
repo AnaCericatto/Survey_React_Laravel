@@ -118,7 +118,7 @@ export default function Login() {
             href="/signup"
             className="font-semibold text-indigo-600 hover:text-indigo-500"
           >
-            Sing up
+            Sign up
           </a>
         </p>
       </div>

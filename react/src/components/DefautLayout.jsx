@@ -12,6 +12,7 @@ import { Navigate, NavLink, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios";
 import { useEffect } from "react";
+import Toast from "./Toast";
 
 const navigation = [
   { name: "Dashboard", to: "/" },
@@ -180,6 +181,23 @@ export default function DefaultLayout() {
           </DisclosurePanel>
         </Disclosure>
         <Outlet />
+        <Toast />
+
+        <footer className="left-0 z-20 w-full p-4 bg-gray-800 border-t  shadow md:flex md:items-center md:justify-between md:p-6">
+          <span className="text-sm text-start text-white sm:text-center ">
+            © 2025{" "}
+          </span>
+          <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-white  sm:mt-0">
+            <li>
+              <a
+                href="https://github.com/AnaCericatto/Survey_React_Laravel"
+                className="hover:underline"
+              >
+                Github
+              </a>
+            </li>
+          </ul>
+        </footer>
       </div>
     </>
   );

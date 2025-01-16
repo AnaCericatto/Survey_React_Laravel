@@ -241,7 +241,6 @@ export default function QuestionEditor({
             </div>
           )}
         </div>
-        {model.type === "select" && <div></div>}
       </div>
       <hr />
     </>
