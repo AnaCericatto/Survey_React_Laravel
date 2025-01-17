@@ -22,12 +22,13 @@ export default function Login() {
         setUserToken(data.token);
       })
       .catch((error) => {
+        console.log(error.response.data);
         if (error.response) {
-          const finalErrors = Object.values(error.response.data.errors).reduce(
+          const finalErrors = Object.values(error.response.data).reduce(
             (accum, next) => [...accum, ...next],
             []
           );
-          setError({ __html: finalErrors.join("<br>") });
+          setError({ __html: finalErrors.join("") });
         }
       });
   };
@@ -40,7 +41,7 @@ export default function Login() {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         {error.__html && (
           <div
-            className="bg-red-500 rounded py-2 px-3 text-white"
+            className="bg-red-500 rounded py-2 px-3 mb-2 text-white"
             dangerouslySetInnerHTML={error}
           ></div>
         )}

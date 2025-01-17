@@ -50,7 +50,7 @@ export default function DefaultLayout() {
 
   return (
     <>
-      <div className="min-h-full">
+      <div className="min-h-full flex flex-col h-screen justify-between">
         <Disclosure as="nav" className="bg-gray-800">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 items-center justify-between">
@@ -180,20 +180,30 @@ export default function DefaultLayout() {
             </div>
           </DisclosurePanel>
         </Disclosure>
-        <Outlet />
+        <div className="mb-auto">
+          <Outlet />
+        </div>
         <Toast />
 
-        <footer className="left-0 z-20 w-full p-4 bg-gray-800 border-t  shadow md:flex md:items-center md:justify-between md:p-6">
+        <footer className="left-0 bottom-0 z-20 w-full p-4 bg-gray-800 border-t  shadow md:flex md:items-center md:justify-between md:p-6">
           <span className="text-sm text-start text-white sm:text-center ">
-            © 2025{" "}
+            © 2025 - Ana Cericatto
           </span>
           <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-white  sm:mt-0">
-            <li>
+            <li className="mr-4">
               <a
                 href="https://github.com/AnaCericatto/Survey_React_Laravel"
                 className="hover:underline"
               >
                 Github
+              </a>
+            </li>
+            <li className="mr-4">
+              <a
+                href="https://www.linkedin.com/in/analuizacericatto/"
+                className="hover:underline"
+              >
+                LinkedIn
               </a>
             </li>
           </ul>
