@@ -19,10 +19,10 @@ https://github.com/user-attachments/assets/7bdae60a-fd48-45fd-b7ef-e1725f58e3ba
 
 ```bash
   # using https
-  git clone https://github.com/ojpro/survey.git
+  git clone https://github.com/AnaCericatto/Survey_React_Laravel.git
 
   # using ssh
-  git clone git@github.com:ojpro/survey.git
+  git clone git@github.com:AnaCericatto/Survey_React_Laravel.git
 
 ```
 
