@@ -2,6 +2,9 @@
 
 Survey System using Laravel and React, with beautiful and usefull analytics.
 
+![image](https://github.com/user-attachments/assets/11504b09-4dfc-4048-93c7-fead73e03dcb)
+
+
 ## Run Locally
 
 1. Clone the project
