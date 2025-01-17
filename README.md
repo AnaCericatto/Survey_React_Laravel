@@ -1,8 +1,16 @@
 # Surveys System
 
-Survey System using Laravel and React, with beautiful and usefull analytics.
+Survey System using Laravel and Reacts.
+
+## Demo
 
 ![image](https://github.com/user-attachments/assets/11504b09-4dfc-4048-93c7-fead73e03dcb)
+![image](https://github.com/user-attachments/assets/f8b2c786-116e-496b-9406-df7bf0bc47e3)
+![image](https://github.com/user-attachments/assets/21079583-fd3b-4a97-8057-6d7bf4b1ab3c)
+![image](https://github.com/user-attachments/assets/bceea396-a409-413e-8b96-e1e581bb146c)
+
+
+https://github.com/user-attachments/assets/7bdae60a-fd48-45fd-b7ef-e1725f58e3ba
 
 
 ## Run Locally
